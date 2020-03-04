@@ -33,7 +33,7 @@ return [
     */
 
     'connections' => [
-        'default' => [
+        'twilio' => [
             'sid' => env('TWILIO_API_SID', ''),
             'token' => env('TWILIO_API_AUTH_TOKEN', ''),
             'from' => env('TWILIO_API_FROM_NUMBER', ''),

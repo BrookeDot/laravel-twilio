@@ -2,21 +2,22 @@
 
 namespace BabDev\Twilio;
 
-use BabDev\Twilio\Contracts\TwilioClient;
+use BabDev\Twilio\Contracts\TwilioClient as TwilioClientContract;
 use Illuminate\Support\Manager;
 use Twilio\Exceptions\TwilioException;
+use Twilio\Http\Client as HttpClient;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
-use Twilio\Rest\Client;
+use Twilio\Rest\Client as RestClient;
 
-class ConnectionManager extends Manager implements TwilioClient
+class ConnectionManager extends Manager implements TwilioClientContract
 {
     /**
      * Get a connection instance.
      *
      * @param string|null $name
      *
-     * @return TwilioClient
+     * @return TwilioClientContract
      */
     public function connection(?string $name = null)
     {
@@ -24,11 +25,21 @@ class ConnectionManager extends Manager implements TwilioClient
     }
 
     /**
+     * Get the default channel driver name.
+     *
+     * @return string
+     */
+    public function getDefaultDriver()
+    {
+        return $this->config->get('twilio.default', 'twilio');
+    }
+
+    /**
      * Create a new driver instance.
      *
      * @param string $driver
      *
-     * @return TwilioClient
+     * @return TwilioClientContract
      *
      * @throws \InvalidArgumentException
      */
@@ -37,10 +48,21 @@ class ConnectionManager extends Manager implements TwilioClient
         try {
             return parent::createDriver($driver);
         } catch (\InvalidArgumentException $e) {
-            $configKey = "twilio.connections.$driver";
-
-            if ($this->config->has($configKey)) {
-                // TODO - Build client
+            if ($this->config->has("twilio.connections.$driver")) {
+                return $this->container->make(
+                    TwilioClient::class,
+                    [
+                        'twilio' => $this->container->make(
+                            RestClient::class,
+                            [
+                                'username' => $this->config->get("twilio.connections.$driver.sid"),
+                                'password' => $this->config->get("twilio.connections.$driver.token"),
+                                'httpClient' => $this->container->make(HttpClient::class),
+                            ]
+                        ),
+                        'from' => $this->config->get("twilio.connections.$driver.from"),
+                    ]
+                );
             }
 
             throw $e;
@@ -50,9 +72,9 @@ class ConnectionManager extends Manager implements TwilioClient
     /**
      * Provides access to the REST API client from the Twilio SDK.
      *
-     * @return Client
+     * @return RestClient
      */
-    public function twilio(): Client
+    public function twilio(): RestClient
     {
         return $this->connection()->twilio();
     }
