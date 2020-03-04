@@ -3,6 +3,7 @@
 namespace BabDev\Twilio\Tests\Providers;
 
 use BabDev\Twilio\ConnectionManager;
+use BabDev\Twilio\Contracts\TwilioClient;
 use BabDev\Twilio\Providers\TwilioProvider;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Testbench\TestCase;
@@ -20,8 +21,8 @@ final class TwilioProviderTest extends TestCase
 
     public function testServicesAreRegistered(): void
     {
-        $this->assertTrue($this->app->bound('babdev.twilio.manager'));
-        $this->assertSame('babdev.twilio.manager', $this->app->getAlias(ConnectionManager::class));
+        $this->assertTrue($this->app->bound(ConnectionManager::class));
+        $this->assertSame(ConnectionManager::class, $this->app->getAlias(TwilioClient::class));
     }
 
     protected function getPackageProviders($app)

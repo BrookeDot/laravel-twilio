@@ -27,6 +27,6 @@ final class TwilioClient extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'babdev.twilio.manager';
+        return ConnectionManager::class;
     }
 }

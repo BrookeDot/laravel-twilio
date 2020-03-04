@@ -24,11 +24,9 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
     public function provides()
     {
         return [
-            'babdev.twilio.manager',
             ConnectionManager::class,
             TwilioClient::class,
 
-            'babdev.twilio.http_client',
             TwilioHttpClient::class,
         ];
     }
@@ -69,14 +67,13 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
     private function registerConnectionManager(): void
     {
         $this->app->singleton(
-            'babdev.twilio.manager',
+            ConnectionManager::class,
             static function (Application $app): ConnectionManager {
                 return new ConnectionManager($app);
             }
         );
 
-        $this->app->alias('babdev.twilio.manager', ConnectionManager::class);
-        $this->app->alias('babdev.twilio.manager', TwilioClient::class);
+        $this->app->alias(ConnectionManager::class, TwilioClient::class);
     }
 
     /**
@@ -87,7 +84,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
     private function registerHttpClient(): void
     {
         $this->app->bind(
-            'babdev.twilio.http_client',
+            TwilioHttpClient::class,
             static function (Application $app): TwilioHttpClient {
                 // If Guzzle is installed, then we will either use Laravel's native client or Guzzle directly
                 if (\class_exists(Guzzle::class)) {
@@ -103,7 +100,5 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
                 return new CurlClient();
             }
         );
-
-        $this->app->alias('babdev.twilio.http_client', TwilioHttpClient::class);
     }
 }
