@@ -3,15 +3,22 @@
 namespace BabDev\Twilio\Tests\Providers;
 
 use BabDev\Twilio\Providers\TwilioProvider;
-use Illuminate\Container\Container;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\ServiceProvider;
+use Orchestra\Testbench\TestCase;
 
 final class TwilioProviderTest extends TestCase
 {
-    public function testServiceIsRegistered(): void
+    public function testServiceProviderPublishesConfiguration(): void
     {
-        $container = new Container();
+        $this->assertArrayHasKey(
+            TwilioProvider::class,
+            ServiceProvider::$publishes,
+            'The service provider should be publishing its configuration.'
+        );
+    }
 
-        (new TwilioProvider($container))->register();
+    protected function getPackageProviders($app)
+    {
+        return [TwilioProvider::class];
     }
 }
