@@ -34,7 +34,10 @@
         "laravel": {
             "providers": [
                 "BabDev\\Twilio\\Providers\\TwilioProvider"
-            ]
+            ],
+            "aliases": {
+                "TwilioClient": "BabDev\\Twilio\\Facades\\TwilioClient"
+            }
         }
     }
 }

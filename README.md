@@ -15,3 +15,9 @@ If your application is not using package discovery, you will need to add the ser
 ```sh
 BabDev\Twilio\Providers\TwilioProvider::class,
 ```
+
+Likewise, you will also need to register the facade in your `config/app.php` file if not using package discovery:
+
+```sh
+'TwilioClient' => BabDev\Twilio\Facades\TwilioClient::class,
+``` 
