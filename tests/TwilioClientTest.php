@@ -65,7 +65,7 @@ final class RestClientTest extends TestCase
         $twilio        = $this->createMock(Client::class);
         $twilio->calls = $calls;
 
-        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, array_merge($params, ['from' => $customFrom])));
+        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, \array_merge($params, ['from' => $customFrom])));
     }
 
     public function testAMessageCanBeSent(): void

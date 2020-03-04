@@ -26,14 +26,14 @@ final class LaravelHttpClient implements Client
     }
 
     /**
-     * @param string      $method The request method to use
-     * @param string      $url The URI to send the request to
-     * @param array       $params Query parameters for the request
-     * @param array       $data The request body
-     * @param array       $headers Request headers
-     * @param string|null $user The username to authenticate with
+     * @param string      $method   The request method to use
+     * @param string      $url      The URI to send the request to
+     * @param array       $params   Query parameters for the request
+     * @param array       $data     The request body
+     * @param array       $headers  Request headers
+     * @param string|null $user     The username to authenticate with
      * @param string|null $password The password to authenticate with
-     * @param int|null    $timeout The request timeout
+     * @param int|null    $timeout  The request timeout
      *
      * @return Response
      *
