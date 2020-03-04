@@ -4,6 +4,7 @@ namespace BabDev\Twilio\Providers;
 
 use BabDev\Twilio\ConnectionManager;
 use BabDev\Twilio\Contracts\TwilioClient;
+use BabDev\Twilio\Twilio\Http\LaravelHttpClient;
 use GuzzleHttp\Client as Guzzle;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\DeferrableProvider;
@@ -88,13 +89,13 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         $this->app->singleton(
             'babdev.twilio.http_client',
             static function (Application $app): TwilioHttpClient {
-                // Use Laravel's HTTP client if able
-                if (\class_exists(Factory::class)) {
-                    // TODO - Create a HTTP client for the Laravel client
-                }
-
-                // Use Guzzle if able
+                // If Guzzle is installed, then we will either use Laravel's native client or Guzzle directly
                 if (\class_exists(Guzzle::class)) {
+                    // Use Laravel's HTTP client if able
+                    if (\class_exists(Factory::class)) {
+                        return new LaravelHttpClient($app->make(Factory::class));
+                    }
+
                     return new GuzzleClient(new Guzzle());
                 }
 
