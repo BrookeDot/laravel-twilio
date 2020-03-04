@@ -115,7 +115,7 @@ final class ConnectionManagerTest extends TestCase
             [
                 'sid' => 'api_sid',
                 'token' => 'api_token',
-                'from' => '+18675309',
+                'from' => '+15558675309',
             ]
         );
 
@@ -124,14 +124,14 @@ final class ConnectionManagerTest extends TestCase
             [
                 'sid' => 'custom_sid',
                 'token' => 'custom_token',
-                'from' => '+18675309',
+                'from' => '+15558675309',
             ]
         );
 
         $app['config']->set(
             'twilio.connections.invalid',
             [
-                'from' => '+18675309',
+                'from' => '+15558675309',
             ]
         );
     }
