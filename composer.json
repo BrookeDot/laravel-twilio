@@ -1,0 +1,39 @@
+{
+    "name": "babdev/laravel-twilio",
+    "license": "MIT",
+    "description": "Twilio SDK integration for Laravel",
+    "keywords": ["laravel", "twilio"],
+    "require": {
+        "php": "^7.2",
+        "illuminate/support": "^6.0|^7.0",
+        "twilio/sdk": "^6.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16.1",
+        "laravel/framework": "^6.0|^7.0",
+        "orchestra/testbench": "^4.0|^5.0",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BabDev\\Twilio\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BabDev\\Twilio\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BabDev\\Twilio\\Providers\\TwilioProvider"
+            ]
+        }
+    }
+}
