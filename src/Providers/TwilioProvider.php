@@ -86,7 +86,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
      */
     private function registerHttpClient(): void
     {
-        $this->app->singleton(
+        $this->app->bind(
             'babdev.twilio.http_client',
             static function (Application $app): TwilioHttpClient {
                 // If Guzzle is installed, then we will either use Laravel's native client or Guzzle directly
