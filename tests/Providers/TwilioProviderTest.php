@@ -2,7 +2,7 @@
 
 namespace BabDev\Twilio\Tests\Providers;
 
-use BabDev\Twilio\Providers\ConnectionManager;
+use BabDev\Twilio\ConnectionManager;
 use BabDev\Twilio\Providers\TwilioProvider;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Testbench\TestCase;

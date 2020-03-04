@@ -2,6 +2,8 @@
 
 namespace BabDev\Twilio\Providers;
 
+use BabDev\Twilio\ConnectionManager;
+use BabDev\Twilio\Contracts\TwilioClient;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         return [
             'babdev.twilio.manager',
             ConnectionManager::class,
+            TwilioClient::class,
         ];
     }
 
@@ -45,12 +48,13 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
     {
         $this->app->singleton(
             'babdev.twilio.manager',
-            static function (Application $app) {
+            static function (Application $app): ConnectionManager {
                 return new ConnectionManager($app);
             }
         );
 
         $this->app->alias('babdev.twilio.manager', ConnectionManager::class);
+        $this->app->alias('babdev.twilio.manager', TwilioClient::class);
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/twilio.php', 'twilio');
     }
