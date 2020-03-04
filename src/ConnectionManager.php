@@ -4,6 +4,7 @@ namespace BabDev\Twilio;
 
 use BabDev\Twilio\Contracts\TwilioClient as TwilioClientContract;
 use Illuminate\Support\Manager;
+use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Http\Client as HttpClient;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
@@ -49,20 +50,24 @@ class ConnectionManager extends Manager implements TwilioClientContract
             return parent::createDriver($driver);
         } catch (\InvalidArgumentException $e) {
             if ($this->config->has("twilio.connections.$driver")) {
-                return $this->container->make(
-                    TwilioClient::class,
-                    [
-                        'twilio' => $this->container->make(
-                            RestClient::class,
-                            [
-                                'username' => $this->config->get("twilio.connections.$driver.sid"),
-                                'password' => $this->config->get("twilio.connections.$driver.token"),
-                                'httpClient' => $this->container->make(HttpClient::class),
-                            ]
-                        ),
-                        'from' => $this->config->get("twilio.connections.$driver.from"),
-                    ]
-                );
+                try {
+                    return $this->container->make(
+                        TwilioClient::class,
+                        [
+                            'twilio' => $this->container->make(
+                                RestClient::class,
+                                [
+                                    'username' => $this->config->get("twilio.connections.$driver.sid"),
+                                    'password' => $this->config->get("twilio.connections.$driver.token"),
+                                    'httpClient' => $this->container->make(HttpClient::class),
+                                ]
+                            ),
+                            'from' => $this->config->get("twilio.connections.$driver.from"),
+                        ]
+                    );
+                } catch (ConfigurationException $e) {
+                    throw new \InvalidArgumentException("Driver [$driver] is not correctly configured.", $e->getCode(), $e);
+                }
             }
 
             throw $e;
