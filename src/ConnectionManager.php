@@ -19,6 +19,8 @@ class ConnectionManager extends Manager implements TwilioClientContract
      * @param string|null $name
      *
      * @return TwilioClientContract
+     *
+     * @throws \InvalidArgumentException if the driver cannot be created
      */
     public function connection(?string $name = null)
     {
@@ -42,7 +44,7 @@ class ConnectionManager extends Manager implements TwilioClientContract
      *
      * @return TwilioClientContract
      *
-     * @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException if the driver cannot be created
      */
     protected function createDriver($driver)
     {
