@@ -4,11 +4,15 @@ namespace BabDev\Twilio\Providers;
 
 use BabDev\Twilio\ConnectionManager;
 use BabDev\Twilio\Contracts\TwilioClient;
+use BabDev\Twilio\Notifications\Channels\TwilioChannel;
 use BabDev\Twilio\Twilio\Http\LaravelHttpClient;
 use GuzzleHttp\Client as Guzzle;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Http\Client\Factory;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Http\Client as TwilioHttpClient;
 use Twilio\Http\CurlClient;
@@ -55,6 +59,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
     {
         $this->registerConnectionManager();
         $this->registerHttpClient();
+        $this->registerNotificationChannel();
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/twilio.php', 'twilio');
     }
@@ -100,5 +105,32 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
                 return new CurlClient();
             }
         );
+    }
+
+    /**
+     * Registers the binding for the notification channel.
+     *
+     * @return void
+     */
+    private function registerNotificationChannel(): void
+    {
+        Notification::resolved(static function (ChannelManager $manager): void {
+            $manager->extend(
+                'twilio',
+                static function (Application $app): TwilioChannel {
+                    /** @var Repository $config */
+                    $config = $app->make('config');
+
+                    /** @var ConnectionManager $manager */
+                    $manager = $app->make(ConnectionManager::class);
+
+                    return new TwilioChannel(
+                        $manager->connection(
+                            $config->get('twilio.notification_channel', $config->get('twilio.default', 'twilio'))
+                        )
+                    );
+                }
+            );
+        });
     }
 }

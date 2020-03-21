@@ -11,7 +11,7 @@ use Twilio\Rest\Api\V2010\Account\MessageInstance;
 use Twilio\Rest\Api\V2010\Account\MessageList;
 use Twilio\Rest\Client;
 
-final class RestClientTest extends TestCase
+final class TwilioClientTest extends TestCase
 {
     public function testTheSdkInstanceCanBeRetrieved(): void
     {

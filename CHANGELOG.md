@@ -1,3 +1,5 @@
 # Changelog
 
-## 1.0.1 (20??-??-??)
+## 1.1.0 (20??-??-??)
+
+- Add a notification channel to send SMS messages

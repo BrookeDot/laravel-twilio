@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Notification Channel Connection Name
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify which of the Twilio connections below you wish
+    | to use as the connection when using Laravel's notifications system.
+    | By default, this uses your default connection.
+    |
+    */
+
+    'notification_channel' => env('TWILIO_NOTIFICATION_CHANNEL_CONNECTION', env('TWILIO_CONNECTION', 'twilio')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Twilio Connections
     |--------------------------------------------------------------------------
     |
@@ -25,7 +38,7 @@ return [
     | all of which are required parameters for creating a connection to the
     | Twilio REST API.
     |
-    | To create a new connection, duplicate the "default" connection
+    | To create a new connection, duplicate the "twilio" connection
     | configuration as a new entry in your connections array and give
     | it a unique name. You can now access this connection through the
     | connection manager.

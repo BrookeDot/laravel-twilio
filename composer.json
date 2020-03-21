@@ -15,6 +15,9 @@
         "orchestra/testbench": "^4.0|^5.0",
         "phpunit/phpunit": "^8.0|^9.0"
     },
+    "suggest": {
+        "illuminate/notifications": "To use Laravel's notifications component with this package"
+    },
     "autoload": {
         "psr-4": {
             "BabDev\\Twilio\\": "src/"
