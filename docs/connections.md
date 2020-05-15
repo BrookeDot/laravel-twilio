@@ -8,7 +8,7 @@ If your application uses multiple sets of REST API credentials for the Twilio AP
 
 Then, in your newly created `config/twilio.php` file, you can add new connections to the `connections` array.
 
-{note} The default "twilio" connection has been created for you and uses environment variables by default. You are free to change the default connection for your application and the name of the "twilio" connection if desired.
+<div class="docs-note">The default "twilio" connection has been created for you and uses environment variables by default. You are free to change the default connection for your application and the name of the "twilio" connection if desired.</div>
 
 ```php
 <?php
