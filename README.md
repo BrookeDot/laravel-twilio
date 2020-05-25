@@ -1,8 +1,8 @@
 # Twilio SDK Integration for Laravel
  
-[![Latest Stable Version](https://poser.pugx.org/babdev/laravel-twilio/v/stable)](https://packagist.org/packages/babdev/laravel-twilio) [![Latest Unstable Version](https://poser.pugx.org/babdev/laravel-twilio/v/unstable)](https://packagist.org/packages/babdev/laravel-twilio) [![Total Downloads](https://poser.pugx.org/babdev/laravel-twilio/downloads)](https://packagist.org/packages/babdev/laravel-twilio) [![License](https://poser.pugx.org/babdev/laravel-twilio/license)](https://packagist.org/packages/babdev/laravel-twilio) [![Build Status](https://travis-ci.com/BabDev/laravel-twilio.svg?branch=master)](https://travis-ci.com/BabDev/laravel-twilio)
+[![Latest Stable Version](https://poser.pugx.org/babdev/laravel-twilio/v/stable)](https://packagist.org/packages/babdev/laravel-twilio) [![Latest Unstable Version](https://poser.pugx.org/babdev/laravel-twilio/v/unstable)](https://packagist.org/packages/babdev/laravel-twilio) [![Total Downloads](https://poser.pugx.org/babdev/laravel-twilio/downloads)](https://packagist.org/packages/babdev/laravel-twilio) [![License](https://poser.pugx.org/babdev/laravel-twilio/license)](https://packagist.org/packages/babdev/laravel-twilio) ![Run Tests](https://github.com/BabDev/laravel-twilio/workflows/Run%20Tests/badge.svg?branch=master)
 
-Laravel package integrating the Twilio SDK into your Laravel application.
+[Laravel](https://laravel.com) package integrating the Twilio SDK into your Laravel application.
 
 ## Documentation
 
