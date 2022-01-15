@@ -17,7 +17,7 @@ final class TwilioClientTest extends TestCase
     {
         $defaultFrom = '+19418675309';
 
-        /** @var Client|MockObject $twilio */
+        /** @var MockObject&Client $twilio */
         $twilio = $this->createMock(Client::class);
 
         $this->assertSame($twilio, (new TwilioClient($twilio, $defaultFrom))->twilio());
@@ -31,14 +31,14 @@ final class TwilioClientTest extends TestCase
             'url' => 'https://www.babdev.com',
         ];
 
-        /** @var CallList|MockObject $calls */
+        /** @var MockObject&CallList $calls */
         $calls = $this->createMock(CallList::class);
         $calls->expects($this->once())
             ->method('create')
             ->with($to, $defaultFrom, $params)
             ->willReturn($this->createMock(CallInstance::class));
 
-        /** @var Client|MockObject $twilio */
+        /** @var MockObject&Client $twilio */
         $twilio        = $this->createMock(Client::class);
         $twilio->calls = $calls;
 
@@ -54,18 +54,18 @@ final class TwilioClientTest extends TestCase
             'url' => 'https://www.babdev.com',
         ];
 
-        /** @var CallList|MockObject $calls */
+        /** @var MockObject&CallList $calls */
         $calls = $this->createMock(CallList::class);
         $calls->expects($this->once())
             ->method('create')
             ->with($to, $customFrom, $params)
             ->willReturn($this->createMock(CallInstance::class));
 
-        /** @var Client|MockObject $twilio */
+        /** @var MockObject&Client $twilio */
         $twilio        = $this->createMock(Client::class);
         $twilio->calls = $calls;
 
-        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, \array_merge($params, ['from' => $customFrom])));
+        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, array_merge($params, ['from' => $customFrom])));
     }
 
     public function testAMessageCanBeSent(): void
@@ -74,7 +74,7 @@ final class TwilioClientTest extends TestCase
         $defaultFrom = '+19418675309';
         $message = 'Test Message';
 
-        /** @var MessageList|MockObject $messages */
+        /** @var MockObject&MessageList $messages */
         $messages = $this->createMock(MessageList::class);
         $messages->expects($this->once())
             ->method('create')
@@ -87,7 +87,7 @@ final class TwilioClientTest extends TestCase
             )
             ->willReturn($this->createMock(MessageInstance::class));
 
-        /** @var Client|MockObject $twilio */
+        /** @var MockObject&Client $twilio */
         $twilio           = $this->createMock(Client::class);
         $twilio->messages = $messages;
 
@@ -101,7 +101,7 @@ final class TwilioClientTest extends TestCase
         $customFrom  = '+16518675309';
         $message = 'Test Message';
 
-        /** @var MessageList|MockObject $messages */
+        /** @var MockObject&MessageList $messages */
         $messages = $this->createMock(MessageList::class);
         $messages->expects($this->once())
             ->method('create')
@@ -114,7 +114,7 @@ final class TwilioClientTest extends TestCase
             )
             ->willReturn($this->createMock(MessageInstance::class));
 
-        /** @var Client|MockObject $twilio */
+        /** @var MockObject&Client $twilio */
         $twilio           = $this->createMock(Client::class);
         $twilio->messages = $messages;
 

@@ -27,7 +27,7 @@ final class TwilioChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
+     * @param mixed        $notifiable
      * @param Notification $notification
      *
      * @return MessageInstance|null

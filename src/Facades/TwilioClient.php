@@ -2,8 +2,8 @@
 
 namespace BabDev\Twilio\Facades;
 
-use BabDev\Twilio\Contracts\TwilioClient as TwilioClientContract;
 use BabDev\Twilio\ConnectionManager;
+use BabDev\Twilio\Contracts\TwilioClient as TwilioClientContract;
 use Illuminate\Support\Facades\Facade;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;

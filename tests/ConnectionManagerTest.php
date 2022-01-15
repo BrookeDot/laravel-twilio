@@ -7,6 +7,7 @@ use BabDev\Twilio\Contracts\TwilioClient as TwilioClientContract;
 use BabDev\Twilio\Providers\TwilioProvider;
 use BabDev\Twilio\TwilioClient;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\ServiceProvider;
 use Orchestra\Testbench\TestCase;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
@@ -107,7 +108,7 @@ final class ConnectionManagerTest extends TestCase
         $this->assertSame($message, $manager->message('me', 'Hello!', []));
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         // Setup connections configuration
         $app['config']->set(
@@ -136,8 +137,13 @@ final class ConnectionManagerTest extends TestCase
         );
     }
 
-    protected function getPackageProviders($app)
+    /**
+     * @return class-string<ServiceProvider>
+     */
+    protected function getPackageProviders($app): array
     {
-        return [TwilioProvider::class];
+        return [
+            TwilioProvider::class,
+        ];
     }
 }

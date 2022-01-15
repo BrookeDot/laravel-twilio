@@ -28,7 +28,7 @@ final class TwilioProviderTest extends TestCase
         $this->assertInstanceOf(TwilioChannel::class, $this->app->get(ChannelManager::class)->driver('twilio'));
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         // Setup connections configuration
         $app['config']->set(
@@ -41,8 +41,13 @@ final class TwilioProviderTest extends TestCase
         );
     }
 
-    protected function getPackageProviders($app)
+    /**
+     * @return class-string<ServiceProvider>
+     */
+    protected function getPackageProviders($app): array
     {
-        return [TwilioProvider::class];
+        return [
+            TwilioProvider::class,
+        ];
     }
 }

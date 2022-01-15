@@ -13,7 +13,7 @@ final class LaravelHttpClientTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        if (!\class_exists(Factory::class)) {
+        if (!class_exists(Factory::class)) {
             self::markTestSkipped('Test only applies to Laravel 7 or newer.');
         }
 
@@ -104,7 +104,7 @@ final class LaravelHttpClientTest extends TestCase
         $factory = $this->app->make(Factory::class);
         $factory->fake(
             [
-                $url => static function () {
+                $url => static function (): void {
                     throw new \RuntimeException('Testing');
                 },
             ]
