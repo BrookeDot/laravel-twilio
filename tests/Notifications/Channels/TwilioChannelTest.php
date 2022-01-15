@@ -46,34 +46,6 @@ final class TwilioChannelTest extends TestCase
         $this->assertInstanceOf(MessageInstance::class, (new TwilioChannel($twilio))->send($notifiable, $notification));
     }
 
-    public function testANotificationIsNotSentWhenTheNotifiableDoesNotRouteToIt(): void
-    {
-        /** @var TwilioClient|MockObject $twilio */
-        $twilio = $this->createMock(TwilioClient::class);
-        $twilio->expects($this->never())
-            ->method('message');
-
-        $notifiable = new class()
-        {
-            use Notifiable;
-
-            public function via($notifiable)
-            {
-                return [];
-            }
-        };
-
-        $notification = new class() extends Notification
-        {
-            public function toTwilio($notifiable)
-            {
-                return 'This is a test';
-            }
-        };
-
-        $this->assertNull((new TwilioChannel($twilio))->send($notifiable, $notification));
-    }
-
     public function testANotificationIsNotSentWhenTheNotifiableDoesNotProvideARecipient(): void
     {
         /** @var TwilioClient|MockObject $twilio */
