@@ -25,7 +25,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
      *
      * @return array<string|class-string>
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             ConnectionManager::class,
@@ -37,8 +37,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -52,8 +50,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {
@@ -66,8 +62,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Registers the binding for the connection manager.
-     *
-     * @return void
      */
     private function registerConnectionManager(): void
     {
@@ -83,8 +77,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Registers the binding for the HTTP client.
-     *
-     * @return void
      */
     private function registerHttpClient(): void
     {
@@ -109,8 +101,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 
     /**
      * Registers the binding for the notification channel.
-     *
-     * @return void
      */
     private function registerNotificationChannel(): void
     {
