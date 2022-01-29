@@ -23,19 +23,19 @@ final class TwilioChannelTest extends TestCase
         $notifiable = new class() {
             use Notifiable;
 
-            public function via($notifiable)
+            public function via(mixed $notifiable): array
             {
                 return ['twilio'];
             }
 
-            public function routeNotificationForTwilio($notification)
+            public function routeNotificationForTwilio(Notification $notification): string
             {
                 return '+19418675309';
             }
         };
 
         $notification = new class() extends Notification {
-            public function toTwilio($notifiable)
+            public function toTwilio(mixed $notifiable): string
             {
                 return 'This is a test';
             }
@@ -54,19 +54,18 @@ final class TwilioChannelTest extends TestCase
         $notifiable = new class() {
             use Notifiable;
 
-            public function via($notifiable)
+            public function via(mixed $notifiable): array
             {
                 return ['twilio'];
             }
 
-            public function routeNotificationForTwilio($notification): void
+            public function routeNotificationForTwilio(Notification $notification): void
             {
-
             }
         };
 
         $notification = new class() extends Notification {
-            public function toTwilio($notifiable)
+            public function toTwilio(mixed $notifiable): string
             {
                 return 'This is a test';
             }
@@ -85,19 +84,19 @@ final class TwilioChannelTest extends TestCase
         $notifiable = new class() {
             use Notifiable;
 
-            public function via($notifiable)
+            public function via(mixed $notifiable): array
             {
                 return ['twilio'];
             }
 
-            public function routeNotificationForTwilio($notification)
+            public function routeNotificationForTwilio(Notification $notification): string
             {
                 return '+19418675309';
             }
         };
 
         $notification = new class() extends Notification {
-            public function toTwilio($notifiable): void
+            public function toTwilio(mixed $notifiable): void
             {
             }
         };

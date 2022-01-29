@@ -16,11 +16,9 @@ class User extends Authenticatable
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @return string[]
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         // This application's users can receive notifications by mail and Twilio SMS
         return ['mail', 'twilio'];
@@ -28,12 +26,8 @@ class User extends Authenticatable
 
     /**
      * Get the notification routing information for the Twilio driver.
-     * 
-     * @param Notification $notification
-     * 
-     * @return string
      */
-    public function routeNotificationForTwilio($notification)
+    public function routeNotificationForTwilio(Notification $notification): string
     {
         return $this->mobile_number;
     }
@@ -45,6 +39,7 @@ For notifications that support being sent as an SMS, you should define a `toTwil
 ```php
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Notifications\Notification;
 
 final class PasswordExpiredNotification extends Notification
@@ -52,13 +47,10 @@ final class PasswordExpiredNotification extends Notification
     /**
      * Get the Twilio / SMS representation of the notification.
      *
-     * @param mixed $notifiable
-     * 
-     * @return string
+     * @param User $notifiable
      */
-    public function toTwilio($notifiable)
+    public function toTwilio(mixed $notifiable): string
     {
-        // The $notifiable in this example is your User model
         return sprintf('Hello %s, this is a note that the password for your %s account has expired.', $notifiable->name, config('app.name'));
     }
 }

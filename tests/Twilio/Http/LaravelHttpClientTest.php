@@ -11,15 +11,6 @@ use Twilio\Exceptions\HttpException;
 
 final class LaravelHttpClientTest extends TestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        if (!class_exists(Factory::class)) {
-            self::markTestSkipped('Test only applies to Laravel 7 or newer.');
-        }
-
-        parent::setUpBeforeClass();
-    }
-
     public function testARequestCanBeSentToTheTwilioApiWithoutCredentials(): void
     {
         $url         = 'https://api.twilio.com/2010-04-01/Accounts/SID/Messages.json';

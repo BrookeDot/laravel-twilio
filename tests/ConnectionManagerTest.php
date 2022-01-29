@@ -9,6 +9,7 @@ use BabDev\Twilio\TwilioClient;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\ServiceProvider;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 use Twilio\Rest\Client;
@@ -46,8 +47,10 @@ final class ConnectionManagerTest extends TestCase
 
     public function testRetrievingTheSdkClientProxiesThrough(): void
     {
+        /** @var MockObject&Client $twilioClient */
         $twilioClient = $this->createMock(Client::class);
 
+        /** @var MockObject&TwilioClientContract $client */
         $client = $this->createMock(TwilioClientContract::class);
         $client->expects($this->once())
             ->method('twilio')
@@ -57,9 +60,7 @@ final class ConnectionManagerTest extends TestCase
         $manager = $this->app->make(ConnectionManager::class);
         $manager->extend(
             'twilio',
-            function (Container $container) use ($client): TwilioClientContract {
-                return $client;
-            }
+            static fn (Container $container): TwilioClientContract => $client
         );
 
         $this->assertSame($twilioClient, $manager->twilio());
@@ -67,8 +68,10 @@ final class ConnectionManagerTest extends TestCase
 
     public function testPlacingACallProxiesThrough(): void
     {
+        /** @var MockObject&CallInstance $call */
         $call = $this->createMock(CallInstance::class);
 
+        /** @var MockObject&TwilioClientContract $client */
         $client = $this->createMock(TwilioClientContract::class);
         $client->expects($this->once())
             ->method('call')
@@ -78,9 +81,7 @@ final class ConnectionManagerTest extends TestCase
         $manager = $this->app->make(ConnectionManager::class);
         $manager->extend(
             'twilio',
-            function (Container $container) use ($client): TwilioClientContract {
-                return $client;
-            }
+            static fn (Container $container): TwilioClientContract => $client
         );
 
         $this->assertSame($call, $manager->call('me', []));
@@ -88,8 +89,10 @@ final class ConnectionManagerTest extends TestCase
 
     public function testSendingAMessageProxiesThrough(): void
     {
+        /** @var MockObject&MessageInstance $message */
         $message = $this->createMock(MessageInstance::class);
 
+        /** @var MockObject&TwilioClientContract $client */
         $client = $this->createMock(TwilioClientContract::class);
         $client->expects($this->once())
             ->method('message')
@@ -100,9 +103,7 @@ final class ConnectionManagerTest extends TestCase
 
         $manager->extend(
             'twilio',
-            function (Container $container) use ($client): TwilioClientContract {
-                return $client;
-            }
+            static fn (Container $container): TwilioClientContract => $client
         );
 
         $this->assertSame($message, $manager->message('me', 'Hello!', []));

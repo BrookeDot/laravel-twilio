@@ -110,8 +110,7 @@ TwilioClient::twilio();
 
 This package attempts to create an appropriate `Twilio\Http\Client` for the SDK based on the packages available in your application, using the following preferences:
 
-- If using Laravel 7 and Guzzle is available, a client using [Laravel's HTTP client](https://laravel.com/docs/http-client) is used
-- If Guzzle is available, the Twilio SDK's Guzzle client is used
-- If neither of the above criteria are met, the Twilio SDK's Curl client is used
+- If Guzzle is available, a client using [Laravel's HTTP client](https://laravel.com/docs/http-client) is used
+- If Guzzle is not available, the Twilio SDK's Curl client is used
 
 If you need to customize the HTTP client used by default in your application, you can extend the `Twilio\Http\Client` service this package creates to use your own HTTP client.

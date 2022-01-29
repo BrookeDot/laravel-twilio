@@ -21,8 +21,6 @@ use Twilio\Http\GuzzleClient;
 final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Get the services provided by the provider.
-     *
      * @return array<string|class-string>
      */
     public function provides(): array
@@ -35,9 +33,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         ];
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         $this->publishes(
@@ -48,9 +43,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         );
     }
 
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->registerConnectionManager();
@@ -60,37 +52,24 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         $this->mergeConfigFrom(__DIR__ . '/../../config/twilio.php', 'twilio');
     }
 
-    /**
-     * Registers the binding for the connection manager.
-     */
     private function registerConnectionManager(): void
     {
         $this->app->singleton(
             ConnectionManager::class,
-            static function (Application $app): ConnectionManager {
-                return new ConnectionManager($app);
-            }
+            static fn (Application $app): ConnectionManager => new ConnectionManager($app)
         );
 
         $this->app->alias(ConnectionManager::class, TwilioClient::class);
     }
 
-    /**
-     * Registers the binding for the HTTP client.
-     */
     private function registerHttpClient(): void
     {
         $this->app->bind(
             TwilioHttpClient::class,
             static function (Application $app): TwilioHttpClient {
-                // If Guzzle is installed, then we will either use Laravel's native client or Guzzle directly
+                // If Guzzle is installed, then we will either use Laravel's native client
                 if (class_exists(Guzzle::class)) {
-                    // Use Laravel's HTTP client if able
-                    if (class_exists(Factory::class)) {
-                        return new LaravelHttpClient($app->make(Factory::class));
-                    }
-
-                    return new GuzzleClient(new Guzzle());
+                    return new LaravelHttpClient($app->make(Factory::class));
                 }
 
                 // Default to the curl client
@@ -99,9 +78,6 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         );
     }
 
-    /**
-     * Registers the binding for the notification channel.
-     */
     private function registerNotificationChannel(): void
     {
         Notification::resolved(static function (ChannelManager $manager): void {

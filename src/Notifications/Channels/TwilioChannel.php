@@ -9,32 +9,14 @@ use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 final class TwilioChannel
 {
-    /**
-     * @var TwilioClient
-     */
-    private $twilio;
-
-    /**
-     * Creates a new Twilio notification channel.
-     *
-     * @param TwilioClient $twilio The Twilio client.
-     */
-    public function __construct(TwilioClient $twilio)
+    public function __construct(private TwilioClient $twilio)
     {
-        $this->twilio = $twilio;
     }
 
     /**
-     * Send the given notification.
-     *
-     * @param mixed        $notifiable
-     * @param Notification $notification
-     *
-     * @return MessageInstance|null
-     *
      * @throws TwilioException on Twilio API failure
      */
-    public function send($notifiable, Notification $notification): ?MessageInstance
+    public function send(mixed $notifiable, Notification $notification): ?MessageInstance
     {
         $to = $notifiable->routeNotificationFor('twilio', $notification);
 
