@@ -13,8 +13,10 @@ final class TwilioClient implements TwilioClientContract
     /**
      * @param string $from The default from number to use.
      */
-    public function __construct(private Client $twilio, private string $from)
-    {
+    public function __construct(
+        private readonly Client $twilio,
+        private readonly string $from,
+    ) {
     }
 
     public function twilio(): Client

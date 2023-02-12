@@ -9,8 +9,9 @@ use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 final class TwilioChannel
 {
-    public function __construct(private TwilioClient $twilio)
-    {
+    public function __construct(
+        private readonly TwilioClient $twilio,
+    ) {
     }
 
     /**

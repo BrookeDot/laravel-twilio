@@ -9,8 +9,9 @@ use Twilio\Http\Response;
 
 final class LaravelHttpClient implements Client
 {
-    public function __construct(private Factory $httpFactory)
-    {
+    public function __construct(
+        private readonly Factory $httpFactory,
+    ) {
     }
 
     /**
@@ -24,7 +25,7 @@ final class LaravelHttpClient implements Client
         array $headers = [],
         string $user = null,
         string $password = null,
-        int $timeout = null
+        int $timeout = null,
     ): Response {
         $request = $this->httpFactory->asForm();
 
@@ -43,7 +44,7 @@ final class LaravelHttpClient implements Client
             $response = $request->send(
                 $method,
                 $url,
-                $requestOptions
+                $requestOptions,
             );
         } catch (\Exception $exception) {
             throw new HttpException('Unable to complete the HTTP request', 0, $exception);
