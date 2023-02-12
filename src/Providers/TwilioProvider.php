@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\ServiceProvider;
 use Twilio\Http\Client as TwilioHttpClient;
 use Twilio\Http\CurlClient;
-use Twilio\Http\GuzzleClient;
 
 final class TwilioProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -67,7 +66,7 @@ final class TwilioProvider extends ServiceProvider implements DeferrableProvider
         $this->app->bind(
             TwilioHttpClient::class,
             static function (Application $app): TwilioHttpClient {
-                // If Guzzle is installed, then we will either use Laravel's native client
+                // If Guzzle is installed, then we will use Laravel's native client
                 if (class_exists(Guzzle::class)) {
                     return new LaravelHttpClient($app->make(Factory::class));
                 }

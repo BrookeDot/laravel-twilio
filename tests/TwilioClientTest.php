@@ -2,122 +2,136 @@
 
 namespace BabDev\Twilio\Tests;
 
-use BabDev\Twilio\TwilioClient;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
+use BabDev\Twilio\Facades\TwilioClient;
+use BabDev\Twilio\Providers\TwilioProvider;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\ServiceProvider;
+use Orchestra\Testbench\TestCase;
 use Twilio\Rest\Api\V2010\Account\CallInstance;
-use Twilio\Rest\Api\V2010\Account\CallList;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
-use Twilio\Rest\Api\V2010\Account\MessageList;
 use Twilio\Rest\Client;
 
 final class TwilioClientTest extends TestCase
 {
+    protected function getEnvironmentSetUp($app): void
+    {
+        // Setup connections configuration
+        $app['config']->set(
+            'twilio.connections.twilio',
+            [
+                'sid' => 'account-sid',
+                'token' => 'api_token',
+                'from' => '+15558675309',
+            ]
+        );
+    }
+
+    /**
+     * @return class-string<ServiceProvider>
+     */
+    protected function getPackageProviders($app): array
+    {
+        return [
+            TwilioProvider::class,
+        ];
+    }
+
     public function testTheSdkInstanceCanBeRetrieved(): void
     {
-        $defaultFrom = '+19418675309';
-
-        /** @var MockObject&Client $twilio */
-        $twilio = $this->createMock(Client::class);
-
-        $this->assertSame($twilio, (new TwilioClient($twilio, $defaultFrom))->twilio());
+        $this->assertInstanceOf(Client::class, TwilioClient::twilio());
     }
 
     public function testACallCanBeCreated(): void
     {
-        $to          = '+15558675309';
-        $defaultFrom = '+19418675309';
-        $params      = [
-            'url' => 'https://www.babdev.com',
-        ];
+        $to = '+15558675309';
 
-        /** @var MockObject&CallList $calls */
-        $calls = $this->createMock(CallList::class);
-        $calls->expects($this->once())
-            ->method('create')
-            ->with($to, $defaultFrom, $params)
-            ->willReturn($this->createMock(CallInstance::class));
+        Http::fake([
+            'https://api.twilio.com/2010-04-01/Accounts/account-sid/Calls.json' => Http::response(
+                $this->getMessageSentResponseContent(config('twilio.connections.twilio.from'), $to),
+                201,
+            ),
+        ]);
 
-        /** @var MockObject&Client $twilio */
-        $twilio        = $this->createMock(Client::class);
-        $twilio->calls = $calls;
-
-        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, $params));
+        $this->assertInstanceOf(CallInstance::class, TwilioClient::call($to));
     }
 
     public function testACallCanBeCreatedWithACustomFromNumber(): void
     {
-        $to          = '+15558675309';
-        $defaultFrom = '+19418675309';
-        $customFrom  = '+16518675309';
-        $params      = [
-            'url' => 'https://www.babdev.com',
-        ];
+        $to = '+15558675309';
+        $customFrom = '+16518675309';
 
-        /** @var MockObject&CallList $calls */
-        $calls = $this->createMock(CallList::class);
-        $calls->expects($this->once())
-            ->method('create')
-            ->with($to, $customFrom, $params)
-            ->willReturn($this->createMock(CallInstance::class));
+        Http::fake([
+            'https://api.twilio.com/2010-04-01/Accounts/account-sid/Calls.json' => Http::response(
+                $this->getMessageSentResponseContent($customFrom, $to),
+                201,
+            ),
+        ]);
 
-        /** @var MockObject&Client $twilio */
-        $twilio        = $this->createMock(Client::class);
-        $twilio->calls = $calls;
-
-        $this->assertInstanceOf(CallInstance::class, (new TwilioClient($twilio, $defaultFrom))->call($to, array_merge($params, ['from' => $customFrom])));
+        $this->assertInstanceOf(CallInstance::class, TwilioClient::call($to));
     }
 
     public function testAMessageCanBeSent(): void
     {
         $to = '+15558675309';
-        $defaultFrom = '+19418675309';
         $message = 'Test Message';
 
-        /** @var MockObject&MessageList $messages */
-        $messages = $this->createMock(MessageList::class);
-        $messages->expects($this->once())
-            ->method('create')
-            ->with(
-                $to,
-                [
-                    'body' => $message,
-                    'from' => $defaultFrom,
-                ]
-            )
-            ->willReturn($this->createMock(MessageInstance::class));
+        Http::fake([
+            'https://api.twilio.com/2010-04-01/Accounts/account-sid/Messages.json' => Http::response(
+                $this->getMessageSentResponseContent(config('twilio.connections.twilio.from'), $to),
+                201,
+            ),
+        ]);
 
-        /** @var MockObject&Client $twilio */
-        $twilio           = $this->createMock(Client::class);
-        $twilio->messages = $messages;
-
-        $this->assertInstanceOf(MessageInstance::class, (new TwilioClient($twilio, $defaultFrom))->message($to, $message));
+        $this->assertInstanceOf(MessageInstance::class, TwilioClient::message($to, $message));
     }
 
     public function testAMessageCanBeSentWithACustomFromNumber(): void
     {
         $to = '+15558675309';
-        $defaultFrom = '+19418675309';
         $customFrom  = '+16518675309';
         $message = 'Test Message';
 
-        /** @var MockObject&MessageList $messages */
-        $messages = $this->createMock(MessageList::class);
-        $messages->expects($this->once())
-            ->method('create')
-            ->with(
-                $to,
-                [
-                    'body' => $message,
-                    'from' => $customFrom,
-                ]
-            )
-            ->willReturn($this->createMock(MessageInstance::class));
+        Http::fake([
+            'https://api.twilio.com/2010-04-01/Accounts/account-sid/Messages.json' => Http::response(
+                $this->getMessageSentResponseContent($customFrom, $to),
+                201,
+            ),
+        ]);
 
-        /** @var MockObject&Client $twilio */
-        $twilio           = $this->createMock(Client::class);
-        $twilio->messages = $messages;
+        $this->assertInstanceOf(MessageInstance::class, TwilioClient::message($to, $message, ['from' => $customFrom]));
+    }
 
-        $this->assertInstanceOf(MessageInstance::class, (new TwilioClient($twilio, $defaultFrom))->message($to, $message, ['from' => $customFrom]));
+    /**
+     * @return array<string, mixed>
+     */
+    private function getMessageSentResponseContent(string $from, string $to): array
+    {
+        $date = Date::now()->toRfc822String();
+
+        return [
+            'body'                  => 'Test',
+            'num_segments'          => '1',
+            'direction'             => 'outbound-api',
+            'from'                  => $from,
+            'date_updated'          => $date,
+            'price'                 => null,
+            'error_message'         => null,
+            'uri'                   => '/2010-04-01/Accounts/account-sid/Messages/message-sid.json',
+            'account_sid'           => 'account-sid',
+            'num_media'             => '0',
+            'to'                    => $to,
+            'date_created'          => $date,
+            'status'                => 'queued',
+            'sid'                   => 'message-sid',
+            'date_sent'             => null,
+            'messaging_service_sid' => null,
+            'error_code'            => null,
+            'price_unit'            => 'USD',
+            'api_version'           => '2010-04-01',
+            'subresource_uris'      => [
+                'media' => '/2010-04-01/Accounts/account-sid/Messages/message-sid/Media.json',
+            ],
+        ];
     }
 }
