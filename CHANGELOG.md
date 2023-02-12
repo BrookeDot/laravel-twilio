@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.5.0 (2023-??-??)
+## 1.5.0 (2023-02-12)
 
 - Added support for Laravel 10
 
