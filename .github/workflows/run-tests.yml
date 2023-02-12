@@ -9,18 +9,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['8.0', '8.1', '8.2']
-        laravel: ['9.*', '10.*@dev']
+        php: ['8.1', '8.2']
+        laravel: ['10.*@dev']
         composer-flags: ['--prefer-stable']
         can-fail: [false]
         include:
-          - php: '8.0'
-            laravel: '9.*'
+          - php: '8.1'
+            laravel: '10.*@dev'
             composer-flags: '--prefer-stable --prefer-lowest'
             can-fail: false
-        exclude:
-          - php: '8.0'
-            laravel: '10.*@dev'
 
     name: "PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}${{ matrix.composer-flags != '' && format(' - Composer {0}', matrix.composer-flags) || '' }}"
 
