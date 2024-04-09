@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0 (2024-04-09)
+
+- Add support for `twilio/sdk:^8.0`
+- Add support for Laravel 11
+
 ## 2.1.0 (2023-03-19)
 
 - Add support for `twilio/sdk:^7.0`
